@@ -1,3 +1,5 @@
+#Created by Akash Gupta
+
 Voting application
 WHAT ??
 A functionality where user can give vote to the given set of candidates
