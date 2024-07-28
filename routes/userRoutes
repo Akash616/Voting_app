@@ -3,9 +3,23 @@ const router = express.Router(); //diff. end point ka manage karta hai.
 const User = require('./../models/user'); //2 file picha hai
 const {jwtAuthMiddleware, generateToken} = require('./../jwt');
 
+const checkIsAdminExists = async (role) => {
+  try{
+      const user =  await User.findOne({ role: role}); 
+      console.log ('user role '+user.role); //debug
+      return user.role === 'admin';
+  }catch(err){
+    return false;
+  }
+}
+
 router.post('/signup', async (req, res) => {
   
     try{
+
+      if( await checkIsAdminExists(req.body.role)){
+        return res.status(403).json({ message: 'Admin already exists' });
+      }
   
       const data = req.body; //assuming the request body contains the User data
 
