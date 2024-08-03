@@ -6,29 +6,24 @@ require('dotenv').config();
 const mongoURL = process.env.MONGODB_URL;
 
 // Set up MongoDB connection
-mongoose.connect(mongoURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect(mongoURL)
+    .then(() => console.log('Connected to MongoDB server'))
+    .catch(err => console.error('MongoDB connection error:', err));
 
 // Get the default connection
-// Mongoose maintains a default connection object representing the MongoDB connection.
 const db = mongoose.connection;
 
 // Define event listeners for database connection
-
-db.on('connected', () => {
-    console.log('Connected to MongoDB server');
-});
-
-db.on('error', (err) => {
-    console.error('MongoDB connection error:', err);
-});
-
 db.on('disconnected', () => {
     console.log('MongoDB disconnected');
 });
 
+// Handle process termination and gracefully close the MongoDB connection
+process.on('SIGINT', async () => {
+    await mongoose.disconnect();
+    console.log('MongoDB connection closed due to app termination');
+    process.exit(0);
+});
+
 // Export the database connection
 module.exports = db;
-
