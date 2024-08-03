@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-//const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
-//Define the Candidate Schema
+// Define the Person schema
 const candidateSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -22,7 +22,7 @@ const candidateSchema = new mongoose.Schema({
                 ref: 'User',
                 required: true
             },
-            votedAt: { //Auto when enty in user
+            votedAt: {
                 type: Date,
                 default: Date.now()
             }
@@ -34,7 +34,5 @@ const candidateSchema = new mongoose.Schema({
     }
 });
 
-
-//Create User model
 const Candidate = mongoose.model('Candidate', candidateSchema);
 module.exports = Candidate;
